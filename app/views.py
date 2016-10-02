@@ -4,9 +4,10 @@ from sqlalchemy_utils import database_exists, create_database
 import psycopg2
 import numpy as np
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
-from pylab import *
 import tempfile
 from sklearn.ensemble import RandomForestClassifier
 from app import app
@@ -31,7 +32,7 @@ def hhc_output():
   ccn = request.args.get('ccn')
   print('ccn:', ccn, type(ccn))
   ccn = int(ccn)
-  data = pd.read_csv('/home/moon/insight_home_care_data/hhc_2016/worse_and_same_hhc.csv',
+  data = pd.read_csv('/home/ubuntu/insight_home_care_data/hhc_2016/worse_and_same_hhc.csv',
                      index_col = 'ccn')
   #read 'ccn' as the index!
   query = data.loc[ccn, :]
@@ -59,13 +60,13 @@ def hhc_predict():
     drug_edu = float(drug_edu)
     depr_ck = float(depr_ck)
     
-    data = pd.read_csv('/home/moon/insight_home_care_data/hhc_2016/worse_and_same_hhc.csv',
+    data = pd.read_csv('/home/ubuntu/insight_home_care_data/hhc_2016/worse_and_same_hhc.csv',
                      index_col = 'ccn')
     #read 'ccn' as the index!
     query = data.loc[ccn, :]
     
     #pull the query of ccn and change to new predictors
-    simu_group = pd.read_csv('/home/moon/insight_home_care_data/hhc_2016/simu_group_2class.csv', 
+    simu_group = pd.read_csv('/home/ubuntu/insight_home_care_data/hhc_2016/simu_group_2class.csv', 
                              index_col = 'ccn')
     x_df = pd.concat([simu_group.ix[:, 'certify_yrs':'bedsore_ck'], 
                       simu_group.ix[:,'othr_cnt':'female_65']], axis=1)
@@ -79,8 +80,7 @@ def hhc_predict():
     x_query['timely'], x_query['phys_cnt'], x_query['drug_edu'] = timely, phys_cnt, drug_edu
     
     #run model and predict new probability
-    rf_grid = RandomForestClassifier(n_estimators = 200, criterion = 'gini', max_features = 'sqrt', 
-                                     class_weight = 'balanced', random_state = 7)
+    rf_grid = RandomForestClassifier(n_estimators = 200, criterion = 'gini', max_features = 'sqrt', class_weight = 'balanced', random_state = 7)
     rf_grid.fit(x, y) 
     class_proba = rf_grid.predict_proba(x_query)
     
@@ -97,13 +97,13 @@ def hhc_predict():
     autotext[1].set_fontsize = 30.0
     fig.legend(patches, ['Unsatisfied', 'Satisfied'], loc="best")
     """
-    matplotlib.style.use('ggplot')
+    #matplotlib.style.use('ggplot')
     fig = plt.figure(figsize=(6.67, 4.67))
     ax = fig.add_subplot(111)
     fig.subplots_adjust(left=0.25)
     data = pd.DataFrame(class_proba, index=['Probability'], columns=['Unsatisfied', 'Satisfied'])
     data.plot(kind='barh', stacked=True, width=0.1, ax=ax)
-    tmp_pie = tempfile.NamedTemporaryFile(dir='/home/moon/insight_app_v2/app/static/tmp',
+    tmp_pie = tempfile.NamedTemporaryFile(dir='/home/ubuntu/insight2016_Boston/app/static/tmp',
                                     suffix='.png',delete=False)
     fig.savefig(tmp_pie, dpi=150)
     tmp_pie.close()
