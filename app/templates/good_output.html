@@ -39,7 +39,7 @@
 
         <div class="container">
             <div class="row">
-            <form  action="/predict#services" method="GET">
+            <form  action="/#services" method="GET">
                 <div class="col-lg-5 col-sm-6">
                     <br>
                     <h2>Current Status</h2>
@@ -68,7 +68,7 @@
                     <input type="text" id="drug_edu" name='drug_edu' value={{query['drug_edu']}} placeholder={{query['drug_edu']}}><br>
                     <label for="depr_ck">Depression check:</label>
                     <input type="text" id="depr_ck" name='depr_ck' value={{query['depr_ck']}} placeholder={{query['depr_ck']}}><br>
-                    <button type="submit" class="btn btn-default btn-lg">Predict!</button>
+                    <button type="submit" class="btn btn-default btn-lg">Go back to Lookup!</button>
                     <br><br><br><br><br>
                 </div>
             </form>
@@ -76,9 +76,9 @@
                     <hr class="section-heading-spacer">
                     <div class="clearfix"></div>  
                     <h2>About the Predictors</h2>
-                    <p class="lead">The top 10 aspects are listed in terms of the importance of predicting the agency's readmission. The number of registered nurses and physical therapists is reported annually. The quality measures tell you how often an agency gave the recommended care like checking patients for vaccine shots when they start getting care. An agency rate of 88% for that measure means that the agency’s process of caring for patients included the recommended practice in 88% of the time.
+                    <p class="lead">The top 10 aspects are listed in terms of the importance of predicting the agency's readmission. The number of registered nurses and physical therapists is reported annually. The quality measures tell you how often an agency gave the recommended care like checking patients for vaccine shots when they start getting care. An agency rate of 88% for that measure means that the agency’s process of caring for patients included the recommended practice in 88% of the time.</p>
                     <h2>Readmission performance:</h2>
-                    <p class="lead">The predicted probability of <b>bad</b> readmission performance for this agency is <b>{{class_proba[0]}}</b>. The agency's actual readmision performance is <b>bad</b>. Improve the services!
+                    <p class="lead">The predicted probability of <b>good</b> readmission performance for this agency is <b>{{class_proba[1]}}</b>. The agency's actual readmision performance is <b>good</b>. Keep the good status! 
                 </div>
             </div>
 
@@ -87,7 +87,6 @@
 
     </div>
     <!-- /.content-section-a -->
-
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>

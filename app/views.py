@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 from matplotlib import rcParams
 import tempfile
 from sklearn.ensemble import RandomForestClassifier
+from sklearn import linear_model
+from sklearn.svm import SVC
 from app import app
 #from ModelIt import ModelIt
 
@@ -18,7 +20,7 @@ from app import app
 # dbname = 'hhc_hos'
 # db = create_engine('postgres://%s%s/%s'%(user,host,dbname))
 # con = None
-# con = psycopg2.connect(database = dbname, user = user)
+# con = psycopg2.connect(databa90.0se = dbname, user = user)
 
 @app.route('/')
 def hhc_input():
@@ -34,9 +36,30 @@ def hhc_output():
   ccn = int(ccn)
   data = pd.read_csv('/home/ubuntu/insight_home_care_data/hhc_2016/worse_and_same_hhc.csv',
                      index_col = 'ccn')
-  #read 'ccn' as the index!
+    #read 'ccn' as the index!
   query = data.loc[ccn, :]
-  return render_template("output.html", query=query, ccn=ccn)
+  if query['er_cd'] == 1:
+    output = 'good_output.html'
+  else:
+    output = 'output.html'
+
+  #predict probability
+  simu_group = pd.read_csv('/home/ubuntu/insight_home_care_data/hhc_2016/simu_group_2class.csv', 
+                             index_col = 'ccn')
+  x_df = pd.concat([simu_group.ix[:, 'certify_yrs':'bedsore_ck'], 
+                    simu_group.ix[:,'othr_cnt':'female_65']], axis=1)
+  x = np.array(x_df)
+  y = np.array(simu_group['er_cd'])   
+  x_query = x_df.loc[ccn, :]
+  #if duplicate queries, use only one
+  if len(x_query.shape) > 1:
+      x_query = x_query.iloc[0, :]
+
+  rf_grid = RandomForestClassifier(n_estimators = 200, criterion = 'gini', max_features = 'sqrt', class_weight = 'balanced', random_state = 7)
+  rf_grid.fit(x, y) 
+  class_proba = rf_grid.predict_proba(x_query)
+
+  return render_template(output, query=query, ccn=ccn, class_proba=class_proba[0])
 
 @app.route('/predict')
 def hhc_predict():
@@ -83,6 +106,10 @@ def hhc_predict():
     rf_grid = RandomForestClassifier(n_estimators = 200, criterion = 'gini', max_features = 'sqrt', class_weight = 'balanced', random_state = 7)
     rf_grid.fit(x, y) 
     class_proba = rf_grid.predict_proba(x_query)
+
+    #svm = SVC(probability=True)
+    #svm.fit(x, y)
+    #class_proba = svm.predict_proba(x_query)
     
     """
     #plot the probability on the pie chart
@@ -101,17 +128,18 @@ def hhc_predict():
     fig = plt.figure(figsize=(6.67, 4.67))
     ax = fig.add_subplot(111)
     fig.subplots_adjust(left=0.25)
-    data = pd.DataFrame(class_proba, index=['Probability'], columns=['Unsatisfied', 'Satisfied'])
+    data = pd.DataFrame(class_proba, index=['Probability'], columns=['Bad', 'Good'])
     data.plot(kind='barh', stacked=True, width=0.1, ax=ax)
-    tmp_pie = tempfile.NamedTemporaryFile(dir='/home/ubuntu/insight2016_Boston/app/static/tmp',
+    tmp_bar = tempfile.NamedTemporaryFile(dir='/home/ubuntu/insight2016_Boston/app/static/tmp',
                                     suffix='.png',delete=False)
-    fig.savefig(tmp_pie, dpi=150)
-    tmp_pie.close()
-    pie_proba = tmp_pie.name.split('/')[-1] 
-    print(pie_proba)
+    fig.savefig(tmp_bar, dpi=150)
+    tmp_bar.close()
+    bar_proba = tmp_bar.name.split('/')[-1] 
+    #print(pie_proba)
 
     return render_template("predict.html", ccn=ccn,
-                           x_query=x_query, query=query, pie_proba=pie_proba)
+                           x_query=x_query, query=query, class_proba=class_proba[0],
+                           bar_proba=bar_proba)
 
     
 

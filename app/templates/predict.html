@@ -68,64 +68,7 @@
     </nav>
 
 
-    <!-- Header -->
-    <a name="home"></a>
-    <div class="intro-header">
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="intro-message">
-                        <h1>Home Health Helper</h1>
-                        <h3>Help improve your services</h3>
-                        <hr class="intro-divider">
-                        <ul class="list-inline intro-social-buttons">
-                            <li>                          
-                                <a href="#about" class="btn btn-default btn-lg">
-                                <i class="fa fa-github fa-fw"></i> 
-                                <span class="network-name">Learn more</span>
-                                </a>                           
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <!-- /.container -->
-
-    </div>
-    <!-- /.intro-header -->
-
-
     <!-- Page Content -->
-
-    <a name=about></a>
-    <div class="content-section-b">
-
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-5 col-sm-push-7  col-sm-5">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2 class="section-heading">About Home Health Helper</h2>
-                    <p class="lead">Home Health Helper aims to reduce the number of home health agencies with unsatisfied readmission rate by improving the service quality.</p>
-                    <p class="lead">The Center for Medicare and Medicaid Services (CMS) provides <a target="_blank" href="https://www.cms.gov/Research-Statistics-Data-and-Systems/Downloadable-Public-Use-Files/Provider-of-Services/">the Provider of Services (POS) files</a> containing the characteristics of home health facilities. Medicare provides <a target="_blank" href="https://data.medicare.gov/data/home-health-compare">the quality measures</a> of home helath agencies' services and readmission rates. The United States <a target="_blank" href="https://github.com/sunlightlabs/census">Census Bureau's API</a> provides census data on block, tract, county and state levels.</p>
-                    <p class="lead">Based on machine learning models, the bar graph on the left shows the importance of these aspects in reducing the readmission.</p>             
-                </div>
-                <div class="col-lg-7 col-sm-pull-5  col-sm-7">
-                    <img class="img-responsive" src="../static/img/feature_ranking3.png" alt="" style="width:800px;height:550px;">
-                </div>
-            </div>
-
-        </div>
-        <!-- /.container -->
-
-    </div>
-    <!-- /.content-section-b -->
-
 
 	<a  name="services"></a>
     <div class="content-section-a">
@@ -134,7 +77,6 @@
             <div class="row">
             <form  action="/predict#services" method="GET">
                 <div class="col-lg-5 col-sm-6">
-                    <br>
                     <h2>New Status</h2>
                     <table class="table table-hover">
                     <tr><th style="text-align:center">CCN</th><th style="text-align:center">Agency name</th>
@@ -142,17 +84,16 @@
                     <tr><td align="center">{{ccn}}</td><td align="center">{{query['provider']}}</td>
                     <td align="center">{{query['certify_yrs']}}</td>
                     </table>
-                    <br>
                     <label for="ccn">CCN:</label>
                     <input type="text" id="ccn" name='ccn' value={{ccn}} placeholder={{ccn}}><br>
+                    <p>The averaged count of registered nurses and physical therapists over four quarters of a year</p>
                     <label for="rn_cnt">Registered nurse:</label>
                     <input type="text" id="rn_cnt" name='rn_cnt' value={{x_query['rn_cnt']}} placeholder={{x_query['rn_cnt']}}><br>
-                    <p>The averaged count of registered nurses over four quarters of a year</p>
                     <label for="phys_cnt">Physical therapist:</label>
                     <input type="text" id="phys_cnt" name='phys_cnt' value={{x_query['phys_cnt']}} placeholder={{x_query['phys_cnt']}}><br>
-                    <label for="pneu_shot">Pneumonia_shot:</label>
+                    <p>The following measures show how often the agency gave these services. For example, a rate of {{x_query['flu_shot']}}% for the flu shot means the agency's flu shot service includes the recommended practice in {{x_query['flu_shot']}}% of the time.</p>
+                    <label for="pneu_shot">Pneumonia shot:</label>
                     <input type="text" id="pneu_shot" name='pneu_shot' value={{x_query['pneu_shot']}} placeholder={{x_query['pneu_shot']}}><br>
-                    <p>The pneumonia shots provided by the agency includes the recommended practice in {{x_query['pneu_shot']}} % of the time.</p>
                     <label for="flu_shot">Flu shot:</label>
                     <input type="text" id="flu_shot" name='flu_shot' value={{x_query['flu_shot']}} placeholder={{x_query['flu_shot']}}><br>
                     <label for="timely">Timely check:</label>
@@ -165,10 +106,12 @@
                 </div>
             </form>
                 <div class="col-lg-6 col-lg-offset-1 col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
-                    <h2>Probablity of Readmission Satisfaction:</h2>
-                    <img class="img-responsive" src="../static/tmp/{{pie_proba}}" alt="">
+                    <h2>Readmission Performance:</h2>
+                    <table class="table table-hover">
+                    <tr><th style="text-align:center">Bad</th><th style="text-align:center">Good</th>
+                    <tr><td align="center">{{class_proba[0]}}</td><td align="center">{{class_proba[1]}}</td>
+                    </table>
+                    <img class="img-responsive" src="../static/tmp/{{bar_proba}}" alt="">
                 </div>
             </div>
             <div class="row">
@@ -184,33 +127,6 @@
 
     </div>
 
-
-	<a  name="contact"></a>
-    <div class="banner">
-
-        <div class="container">
-
-            <div class="row">
-                <div class="col-lg-6">
-                    <h2>Data Science in Healthcare:</h2>
-                </div>
-                <div class="col-lg-6">
-                    <ul class="list-inline banner-social-buttons">
-                        <li>
-                            <a href="https://www.linkedin.com/in/yue-zhao-b7947970" class="btn btn-default btn-lg"><i class="fa fa-linkedin fa-fw"></i> <span class="network-name">Linkedin</span></a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/moon412" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-        <!-- /.container -->
-
-    </div>
-    <!-- /.banner -->
 
     <!-- Footer -->
     <footer>
