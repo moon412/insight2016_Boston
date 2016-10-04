@@ -59,7 +59,18 @@ def hhc_output():
   rf_grid.fit(x, y) 
   class_proba = rf_grid.predict_proba(x_query)
 
-  return render_template(output, query=query, ccn=ccn, class_proba=class_proba[0])
+  fig = plt.figure(figsize=(6.67, 4.67))
+  ax = fig.add_subplot(111)
+  fig.subplots_adjust(left=0.25)
+  data = pd.DataFrame(class_proba, index=['Probability'], columns=['Bad', 'Good'])
+  data.plot(kind='barh', stacked=True, width=0.1, ax=ax)
+  tmp_bar = tempfile.NamedTemporaryFile(dir='/home/ubuntu/insight2016_Boston/app/static/tmp',
+                                        suffix='.png',delete=False)
+  fig.savefig(tmp_bar, dpi=150)
+  tmp_bar.close()
+  bar_proba = tmp_bar.name.split('/')[-1] 
+
+  return render_template(output, query=query, ccn=ccn, class_proba=class_proba[0], bar_proba=bar_proba)
 
 @app.route('/predict')
 def hhc_predict():
@@ -74,6 +85,7 @@ def hhc_predict():
     phys_cnt =  request.args.get('phys_cnt')
     drug_edu =  request.args.get('drug_edu')  
     depr_ck = request.args.get('depr_ck') 
+    pain_ck = request.args.get('pain_ck')
     ccn = int(ccn)
     rn_cnt = float(rn_cnt)
     pneu_shot = float(pneu_shot)
@@ -82,6 +94,7 @@ def hhc_predict():
     phys_cnt = float(phys_cnt)
     drug_edu = float(drug_edu)
     depr_ck = float(depr_ck)
+    pain_ck = float(pain_ck)
     
     data = pd.read_csv('/home/ubuntu/insight_home_care_data/hhc_2016/worse_and_same_hhc.csv',
                      index_col = 'ccn')
@@ -100,16 +113,12 @@ def hhc_predict():
     if len(x_query.shape) > 1:
         x_query = x_query.iloc[0, :]
     x_query['rn_cnt'], x_query['pneu_shot'], x_query['flu_shot'], x_query['depr_ck'] = rn_cnt, pneu_shot, flu_shot, depr_ck
-    x_query['timely'], x_query['phys_cnt'], x_query['drug_edu'] = timely, phys_cnt, drug_edu
+    x_query['timely'], x_query['phys_cnt'], x_query['drug_edu'], x_query['pain_ck'] = timely, phys_cnt, drug_edu, pain_ck
     
     #run model and predict new probability
     rf_grid = RandomForestClassifier(n_estimators = 200, criterion = 'gini', max_features = 'sqrt', class_weight = 'balanced', random_state = 7)
     rf_grid.fit(x, y) 
     class_proba = rf_grid.predict_proba(x_query)
-
-    #svm = SVC(probability=True)
-    #svm.fit(x, y)
-    #class_proba = svm.predict_proba(x_query)
     
     """
     #plot the probability on the pie chart
@@ -135,7 +144,6 @@ def hhc_predict():
     fig.savefig(tmp_bar, dpi=150)
     tmp_bar.close()
     bar_proba = tmp_bar.name.split('/')[-1] 
-    #print(pie_proba)
 
     return render_template("predict.html", ccn=ccn,
                            x_query=x_query, query=query, class_proba=class_proba[0],

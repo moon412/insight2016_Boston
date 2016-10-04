@@ -41,25 +41,23 @@
             <div class="row">
             <form  action="/predict#services" method="GET">
                 <div class="col-lg-5 col-sm-6">
-                    <br>
                     <h2>Current Status</h2>
                     <table class="table table-hover">
-                    <tr><th style="text-align:center">CCN</th><th style="text-align:center">Agency name</th>
+                    <tr><th style="text-align:center">Agency name</th>
                     <th style="text-align:center">Certified years</th>
-                    <tr><td align="center">{{ccn}}</td><td align="center">{{query['provider']}}</td>
+                    <tr><td align="center">{{query['provider']}}</td>
                     <td align="center">{{query['certify_yrs']}}</td>
                     </table>
-                    <br>
                     <label for="ccn">CCN:</label>
                     <input type="text" id="ccn" name='ccn' value={{ccn}} placeholder={{ccn}}><br>
+                    <p>The averaged count of registered nurses and physical therapists over four quarters of a year</p>
                     <label for="rn_cnt">Registered nurse:</label>
                     <input type="text" id="rn_cnt" name='rn_cnt' value={{query['rn_cnt']}} placeholder={{query['rn_cnt']}}><br>
-                    <p>The averaged count of registered nurses over four quarters of a year</p>
                     <label for="phys_cnt">Physical therapist:</label>
                     <input type="text" id="phys_cnt" name='phys_cnt' value={{query['phys_cnt']}} placeholder={{query['phys_cnt']}}><br>
+                    <p>The following measures (0%-100%) show how often the agency gave these services. For example, a rate of {{query['flu_shot']}}% for the flu shot means the agency's flu shot service includes the recommended practice in {{query['flu_shot']}}% of the time.</p>
                     <label for="pneu_shot">Pneumonia shot:</label>
                     <input type="text" id="pneu_shot" name='pneu_shot' value={{query['pneu_shot']}} placeholder={{query['pneu_shot']}}><br>
-                    <p>The pneumonia shots provided by the agency includes the recommended practice in {{query['pneu_shot']}} % of the time.</p>
                     <label for="flu_shot">Flu shot:</label>
                     <input type="text" id="flu_shot" name='flu_shot' value={{query['flu_shot']}} placeholder={{query['flu_shot']}}><br>
                     <label for="timely">Timely check:</label>
@@ -68,17 +66,16 @@
                     <input type="text" id="drug_edu" name='drug_edu' value={{query['drug_edu']}} placeholder={{query['drug_edu']}}><br>
                     <label for="depr_ck">Depression check:</label>
                     <input type="text" id="depr_ck" name='depr_ck' value={{query['depr_ck']}} placeholder={{query['depr_ck']}}><br>
+                    <label for="pain_ck">Pain check:</label>
+                    <input type="text" id="pain_ck" name='pain_ck' value={{query['pain_ck']}} placeholder={{query['pain_ck']}}><br>
                     <button type="submit" class="btn btn-default btn-lg">Predict!</button>
-                    <br><br><br><br><br>
+                    <br>
                 </div>
             </form>
-                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>  
-                    <h2>About the Predictors</h2>
-                    <p class="lead">The top 10 aspects are listed in terms of the importance of predicting the agency's readmission. The number of registered nurses and physical therapists is reported annually. The quality measures tell you how often an agency gave the recommended care like checking patients for vaccine shots when they start getting care. An agency rate of 88% for that measure means that the agency’s process of caring for patients included the recommended practice in 88% of the time.
-                    <h2>Readmission performance:</h2>
+                <div class="col-lg-6 col-lg-offset-1 col-sm-6">
+                    <h2>Readmission Performance Rating:</h2>
                     <p class="lead">The predicted probability of <b>bad</b> readmission performance for this agency is <b>{{class_proba[0]}}</b>. The agency's actual readmision performance is <b>bad</b>. Improve the services!
+                    <img class="img-responsive" src="../static/tmp/{{bar_proba}}" alt="">
                 </div>
             </div>
 

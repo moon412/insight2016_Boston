@@ -32,42 +32,6 @@
 
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
-        <div class="container topnav">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand topnav" href="#">Home Health Helper</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="#home">Home</a>
-                    </li>
-                    <li>
-                        <a href="#about">About</a>
-                    </li>
-                    <li>
-                        <a href="#services">Services</a>
-                    </li>
-                    <li>
-                        <a href="#contact">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
-
     <!-- Page Content -->
 
 	<a  name="services"></a>
@@ -79,9 +43,9 @@
                 <div class="col-lg-5 col-sm-6">
                     <h2>New Status</h2>
                     <table class="table table-hover">
-                    <tr><th style="text-align:center">CCN</th><th style="text-align:center">Agency name</th>
+                    <tr><th style="text-align:center">Agency name</th>
                     <th style="text-align:center">Certified years</th>
-                    <tr><td align="center">{{ccn}}</td><td align="center">{{query['provider']}}</td>
+                    <tr><td align="center">{{query['provider']}}</td>
                     <td align="center">{{query['certify_yrs']}}</td>
                     </table>
                     <label for="ccn">CCN:</label>
@@ -91,7 +55,7 @@
                     <input type="text" id="rn_cnt" name='rn_cnt' value={{x_query['rn_cnt']}} placeholder={{x_query['rn_cnt']}}><br>
                     <label for="phys_cnt">Physical therapist:</label>
                     <input type="text" id="phys_cnt" name='phys_cnt' value={{x_query['phys_cnt']}} placeholder={{x_query['phys_cnt']}}><br>
-                    <p>The following measures show how often the agency gave these services. For example, a rate of {{x_query['flu_shot']}}% for the flu shot means the agency's flu shot service includes the recommended practice in {{x_query['flu_shot']}}% of the time.</p>
+                    <p>The following measures (0%-100%) show how often the agency gave these services. For example, a rate of {{x_query['flu_shot']}}% for the flu shot means the agency's flu shot service includes the recommended practice in {{x_query['flu_shot']}}% of the time.</p>
                     <label for="pneu_shot">Pneumonia shot:</label>
                     <input type="text" id="pneu_shot" name='pneu_shot' value={{x_query['pneu_shot']}} placeholder={{x_query['pneu_shot']}}><br>
                     <label for="flu_shot">Flu shot:</label>
@@ -102,15 +66,15 @@
                     <input type="text" id="drug_edu" name='drug_edu' value={{x_query['drug_edu']}} placeholder={{x_query['drug_edu']}}><br>
                     <label for="depr_ck">Depression check:</label>
                     <input type="text" id="depr_ck" name='depr_ck' value={{x_query['depr_ck']}} placeholder={{x_query['depr_ck']}}><br>
+                    <label for="pain_ck">Pain check:</label>
+                    <input type="text" id="pain_ck" name='pain_ck' value={{x_query['pain_ck']}} placeholder={{x_query['pain_ck']}}><br>
                     <button type="submit" class="btn btn-default btn-lg">Predict!</button><br>
                 </div>
             </form>
                 <div class="col-lg-6 col-lg-offset-1 col-sm-6">
-                    <h2>Readmission Performance:</h2>
-                    <table class="table table-hover">
-                    <tr><th style="text-align:center">Bad</th><th style="text-align:center">Good</th>
-                    <tr><td align="center">{{class_proba[0]}}</td><td align="center">{{class_proba[1]}}</td>
-                    </table>
+                    <h2>Readmission Performance Rating:</h2>
+                    <p class="lead">The predicted probability of <b>bad</b> readmission performance for this agency is <b>{{class_proba[0]}}</b>. 
+                    <br>
                     <img class="img-responsive" src="../static/tmp/{{bar_proba}}" alt="">
                 </div>
             </div>
@@ -126,35 +90,6 @@
         <!-- /.container -->
 
     </div>
-
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="list-inline">
-                        <li>
-                            <a href="#">Home</a>
-                        </li>
-                        <li class="footer-menu-divider">&sdot;</li>
-                        <li>
-                            <a href="#about">About</a>
-                        </li>
-                        <li class="footer-menu-divider">&sdot;</li>
-                        <li>
-                            <a href="#services">Services</a>
-                        </li>
-                        <li class="footer-menu-divider">&sdot;</li>
-                        <li>
-                            <a href="#contact">Contact</a>
-                        </li>
-                    </ul>
-                    <p class="copyright text-muted small">Copyright &copy; Your Company 2014. All Rights Reserved</p>
-                </div>
-            </div>
-        </div>
-    </footer>
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>

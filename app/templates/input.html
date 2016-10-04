@@ -113,12 +113,12 @@
                     <hr class="section-heading-spacer">
                     <div class="clearfix"></div>
                     <h2 class="section-heading">About Home Health Helper</h2>
-                    <p class="lead">Home Health Helper aims to reduce the number of home health agencies with unsatisfied readmission rate by improving the service quality.</p>
-                    <p class="lead">The Center for Medicare and Medicaid Services (CMS) provides <a target="_blank" href="https://www.cms.gov/Research-Statistics-Data-and-Systems/Downloadable-Public-Use-Files/Provider-of-Services/">the Provider of Services (POS) files</a> containing the characteristics of home health facilities. Medicare provides <a target="_blank" href="https://data.medicare.gov/data/home-health-compare">the quality measures</a> of home helath agencies' services and readmission rates. The United States <a target="_blank" href="https://github.com/sunlightlabs/census">Census Bureau's API</a> provides census data on block, tract, county and state levels.</p>
-                    <p class="lead">Based on machine learning models, the bar graph on the left shows the importance of these aspects in reducing the readmission.</p>             
+                    <p class="lead">Home Health Helper aims to reduce the number of home health agencies with bad readmission performance rating by improving their service quality.</p>
+                    <p class="lead">The Center for Medicare and Medicaid Services (CMS) provides <a target="_blank" href="https://www.cms.gov/Research-Statistics-Data-and-Systems/Downloadable-Public-Use-Files/Provider-of-Services/">the Provider of Services (POS) files</a> containing the characteristics of home health agencies. Medicare provides <a target="_blank" href="https://data.medicare.gov/data/home-health-compare">the quality measures</a> of home helath agencies' services and readmission performance rating. The United States <a target="_blank" href="https://github.com/sunlightlabs/census">Census Bureau's API</a> provides census data on block, tract, county and state levels.</p>
+                    <p class="lead">Based on machine learning models, the bar graph on the left shows the importance of these aspects in predicting the readmission performance.</p>             
                 </div>
                 <div class="col-lg-7 col-sm-pull-5  col-sm-7">
-                    <img class="img-responsive" src="../static/img/feature_ranking3.png" alt="" style="width:800px;height:550px;">
+                    <img class="img-responsive" src="../static/img/feature_ranking.png" alt="" style="width:800px;height:550px;">
                 </div>
             </div>
 
@@ -141,13 +141,14 @@
                     <h2>Better Service, Better Home Health</h2>
                     <p>Enter a home care provider's CCN</p>
                     <label for="ccn">CCN:</label>
-                    <input type="text" id="ccn" name='ccn' placeholder="e.g.17069"><br>
+                    <input type="text" id="ccn" name='ccn' placeholder="e.g.747447"><br>
                     <button type="submit" class="btn btn-default btn-lg">Look up!</button>
                     <br><br> 
                     <h2>What is CCN?</h2>
                     <p class='lead'>CCN stands for the CMS Certification Number.</p>
                     <p class='lead'>Each home health agency has a unique CCN.</p>
-                    <p class='lead'>For example, 17069 is Amedisys home health of Foley.</p>  
+                    <p class='lead'>For example, 747447 is Tripple C Health Systems Inc. in Texas.</p>  
+                    <p class='lead'>For example, 17089 is Cullman Regional Medical Center in Alabama.</p>                    
                     <br><br><br><br><br><br>     
                 </div>
             </form>
